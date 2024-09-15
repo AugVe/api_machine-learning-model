@@ -5,6 +5,10 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics.pairwise import cosine_similarity
 
+
+# Instancia de FastAPI
+app = FastAPI()
+
 # Cargar los datasets
 df_movies_api_acotado = pd.read_csv("movies_api_acotado_datasets.csv")
 df_cast_api = pd.read_csv("cast_dataset.csv")
@@ -23,9 +27,6 @@ df_features[['popularity']] = scaler.fit_transform(df_features[['popularity']])
 # Asegurarnos de que las columnas estén en el orden correcto
 df_features = df_features.sort_index(axis=1)
 
-# Calcular la matriz de similitud
-cosine_sim = cosine_similarity(df_features, df_features)
-
 # Convertir la columna 'release_date' a tipo datetime
 df_movies_api_acotado['release_date'] = pd.to_datetime(df_movies_api_acotado['release_date'], errors='coerce')
 
@@ -41,8 +42,8 @@ df_movies_api_acotado.dropna(subset=['vote_count', 'revenue', 'budget', 'runtime
 df_movies_api_acotado['overview'] = df_movies_api_acotado['overview'].fillna('')
 df_movies_api_acotado = df_movies_api_acotado.reset_index(drop=True)
 
-# Instancia de FastAPI
-app = FastAPI()
+# Calcular la matriz de similitud
+cosine_sim = cosine_similarity(df_features, df_features)
 
 # Defino ROOT
 @app.get("/")
@@ -127,10 +128,10 @@ def cantidad_peliculas_director(nombre_director: str):
 
 # Modelo de recomendación
 @app.get("/modelo_recomendacion/{title}")
-def recommend_movies(title,cosine_sim=cosine_sim):
+def recommend_movies(title: str):
     # Verificar si el título existe en el DataFrame original
     if title not in df_movies_api_acotado['title'].values:
-        return "Título no encontrado en el DataFrame."
+        raise HTTPException(status_code=404, detail="Título no encontrado en el DataFrame.")
     
     # Obtener el índice de la película seleccionada
     idx = df_movies_api_acotado.index[df_movies_api_acotado['title'] == title].tolist()[0]
@@ -148,4 +149,5 @@ def recommend_movies(title,cosine_sim=cosine_sim):
     movie_indices = [i[0] for i in sim_scores]
     
     # Devolver la lista de películas recomendadas
-    return df_movies_api_acotado.iloc[movie_indices][['title', 'overview', 'popularity', 'release_year']]
+    recommended_movies = df_movies_api_acotado.iloc[movie_indices][['title', 'overview', 'popularity', 'release_year']]
+    return recommended_movies
