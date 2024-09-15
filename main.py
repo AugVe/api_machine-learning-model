@@ -7,9 +7,24 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Cargar los datasets
 df_movies_api_acotado = pd.read_csv("movies_api_acotado_datasets.csv")
-df_machine_learning = pd.read_csv('movies_api_acotado_datasets.csv')
 df_cast_api = pd.read_csv("cast_dataset.csv")
 df_crew_api = pd.read_csv("crew_dataset.csv")
+
+# Seleccionar las columnas relevantes
+df_features = df_movies_api_acotado[['release_year', 'name_genres', 'iso_3166_1_country', 'popularity']].head(20000)
+
+# Codificación One-Hot para columnas categóricas
+df_features = pd.get_dummies(df_features, columns=['name_genres', 'iso_3166_1_country'])
+
+# Normalización de columnas numéricas
+scaler = StandardScaler()
+df_features[['popularity']] = scaler.fit_transform(df_features[['popularity']])
+
+# Asegurarnos de que las columnas estén en el orden correcto
+df_features = df_features.sort_index(axis=1)
+
+# Calcular la matriz de similitud
+cosine_sim = cosine_similarity(df_features, df_features)
 
 # Convertir la columna 'release_date' a tipo datetime
 df_movies_api_acotado['release_date'] = pd.to_datetime(df_movies_api_acotado['release_date'], errors='coerce')
@@ -26,29 +41,13 @@ df_movies_api_acotado.dropna(subset=['vote_count', 'revenue', 'budget', 'runtime
 df_movies_api_acotado['overview'] = df_movies_api_acotado['overview'].fillna('')
 df_movies_api_acotado = df_movies_api_acotado.reset_index(drop=True)
 
-# Seleccionar las columnas relevantes
-df_features = df_machine_learning[['release_year', 'name_genres', 'iso_3166_1_country', 'popularity']]
-
-# Codificación One-Hot para columnas categóricas
-df_features = pd.get_dummies(df_features, columns=['name_genres', 'iso_3166_1_country'])
-
-# Normalización de columnas numéricas
-scaler = StandardScaler()
-df_features[['popularity']] = scaler.fit_transform(df_features[['popularity']])
-
-# Asegurarnos de que las columnas estén en el orden correcto
-df_features = df_features.sort_index(axis=1)
-
-# Calcular la matriz de similitud
-cosine_sim = cosine_similarity(df_features, df_features)
-
 # Instancia de FastAPI
 app = FastAPI()
 
 # Defino ROOT
 @app.get("/")
 def read_root():
-    return {"message": "Welcome to the API"}
+    return "Welcome to the API"
 
 # Endpoint 1: Cantidad de filmaciones por mes
 @app.get("/cantidad_filmaciones_mes/{mes}")
@@ -60,7 +59,7 @@ def cantidad_filmaciones_mes(mes: str):
     }
     mes_num = mes_map.get(mes.lower())
     if not mes_num:
-        return {"error": "Mes no válido"}
+        return "Mes no válido"
     
     cantidad = df_movies_api_acotado[df_movies_api_acotado['release_date'].dt.strftime('%m') == mes_num].shape[0]
     return f"{cantidad} películas fueron estrenadas en el mes de {mes}"
@@ -74,7 +73,7 @@ def cantidad_filmaciones_dia(dia: str):
     }
     dia_num = dia_map.get(dia.lower())
     if dia_num is None:
-        return {"error": "Día no válido"}
+        return "Día no válido"
 
     cantidad = df_movies_api_acotado[df_movies_api_acotado['release_date'].dt.dayofweek == dia_num].shape[0]
     return f"{cantidad} películas fueron estrenadas en el día {dia}"
@@ -84,7 +83,7 @@ def cantidad_filmaciones_dia(dia: str):
 def score_titulo(titulo_de_la_filmacion: str):
     pelicula = df_movies_api_acotado[df_movies_api_acotado['title'].str.contains(titulo_de_la_filmacion, case=False, na=False)]
     if pelicula.empty:
-        return {"error": "Película no encontrada"}
+        return "Película no encontrada"
     
     pelicula = pelicula.iloc[0]
     titulo = pelicula['title']
@@ -130,11 +129,11 @@ def cantidad_peliculas_director(nombre_director: str):
 @app.get("/modelo_recomendacion/{title}")
 def recommend_movies(title,cosine_sim=cosine_sim):
     # Verificar si el título existe en el DataFrame original
-    if title not in df_machine_learning['title'].values:
-        raise ValueError("Título no encontrado en el DataFrame.")
+    if title not in df_movies_api_acotado['title'].values:
+        return "Título no encontrado en el DataFrame."
     
     # Obtener el índice de la película seleccionada
-    idx = df_machine_learning.index[df_machine_learning['title'] == title].tolist()[0]
+    idx = df_movies_api_acotado.index[df_movies_api_acotado['title'] == title].tolist()[0]
     
     # Obtener las puntuaciones de similitud para la película seleccionada
     sim_scores = list(enumerate(cosine_sim[idx]))
@@ -149,7 +148,4 @@ def recommend_movies(title,cosine_sim=cosine_sim):
     movie_indices = [i[0] for i in sim_scores]
     
     # Devolver la lista de películas recomendadas
-    return df_machine_learning.iloc[movie_indices][['title', 'overview', 'popularity', 'release_year']]
-
-if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=10000, reload=True)
+    return df_movies_api_acotado.iloc[movie_indices][['title', 'overview', 'popularity', 'release_year']]
