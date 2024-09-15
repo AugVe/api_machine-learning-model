@@ -131,7 +131,7 @@ def cantidad_peliculas_director(nombre_director: str):
 def recommend_movies(title: str):
     # Verificar si el título existe en el DataFrame original
     if title not in df_movies_api_acotado['title'].values:
-        raise HTTPException(status_code=404, detail="Título no encontrado en el DataFrame.")
+        return "Título no encontrado en el DataFrame."
     
     # Obtener el índice de la película seleccionada
     idx = df_movies_api_acotado.index[df_movies_api_acotado['title'] == title].tolist()[0]
