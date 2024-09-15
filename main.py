@@ -149,5 +149,5 @@ def recommend_movies(title: str):
     movie_indices = [i[0] for i in sim_scores]
     
     # Devolver la lista de películas recomendadas
-    recommended_movies = df_movies_api_acotado.iloc[movie_indices][['title', 'overview', 'popularity', 'release_year']]
-    return recommended_movies
+    recommended_movies = df_movies_api_acotado.iloc[movie_indices][['title', 'popularity', 'release_year', 'overview']]
+    return recommended_movies.to_dict(orient='records')
