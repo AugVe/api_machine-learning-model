@@ -15,7 +15,7 @@ df_cast_api = pd.read_csv("cast_dataset.csv")
 df_crew_api = pd.read_csv("crew_dataset.csv")
 
 # Seleccionar las columnas relevantes
-df_features = df_movies_api_acotado[['release_year', 'name_genres', 'iso_3166_1_country', 'popularity']].head(10)
+df_features = df_movies_api_acotado[['release_year', 'name_genres', 'iso_3166_1_country', 'popularity']].head(1000)
 
 # Codificación One-Hot para columnas categóricas
 df_features = pd.get_dummies(df_features, columns=['name_genres', 'iso_3166_1_country'])
