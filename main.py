@@ -118,7 +118,7 @@ def get_actor(nombre_actor: str):
     return f"No se encontraron películas para el actor '{nombre_actor}'."
 
 # Endpoint 6: Cantidad de películas de un director
-@app.get("/cantidad_peliculas_director/{nombre_director}")
+@app.get("/get_director/{nombre_director}")
 def cantidad_peliculas_director(nombre_director: str):
     peliculas_director = df_crew_api[(df_crew_api['name'] == nombre_director) & (df_crew_api['job'] == 'Director')]
     cantidad_peliculas = len(peliculas_director)
