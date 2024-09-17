@@ -38,5 +38,7 @@ Descripción: Devuelve una lista de 5 películas recomendadas con su título, po
 ## Archivos de Dataset:
 
 movies_api_acotado_datasets.parquet: Contiene información sobre las películas.
+
 cast_dataset.csv: Contiene información sobre los actores.
+
 crew_dataset.csv: Contiene información sobre el personal involucrado en las películas.
