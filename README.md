@@ -7,31 +7,51 @@ Esta es una API basada en FastAPI que proporciona datos relacionados con pelícu
 La API tiene los siguientes endpoints:
 
 1. Cantidad de Filmaciones por Mes
+
 URL: /cantidad_filmaciones_mes/{mes}
+
 Descripción: Devuelve la cantidad de películas estrenadas en un mes específico.
 
+
 2. Cantidad de Filmaciones por Día
+
 URL: /cantidad_filmaciones_dia/{dia}
+
 Descripción: Devuelve la cantidad de películas estrenadas en un día específico de la semana.
 
+
 3. Puntuación de una Película por Título
+
 URL: /score_titulo/{titulo_de_la_filmacion}
+
 Descripción: Devuelve la puntuación de popularidad de una película específica.
 
+
 4. Votos de una Película por Título
+
 URL: /votos_titulo/{titulo_de_la_filmacion}
+
 Descripción: Devuelve la cantidad de votos de una película y su puntuación promedio si tiene más de 2000 votos.
 
+
 5. Cantidad de Películas de un Actor
+
 URL: /get_actor/{nombre_actor}
+
 Descripción: Devuelve la cantidad de películas en las que ha participado un actor específico.
 
+
 6. Cantidad de Películas Dirigidas por un Director
+
 URL: /get_director/{nombre_director}
+
 Descripción: Devuelve la cantidad de películas dirigidas por un director específico.
 
+
 7. Recomendación de Películas
+
 URL: /modelo_recomendacion/{title}
+
 Descripción: Devuelve una lista de 5 películas recomendadas con su título, popularidad, año de estreno y sinopsis.
 
 
