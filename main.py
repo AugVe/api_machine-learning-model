@@ -127,7 +127,7 @@ def cantidad_peliculas_director(nombre_director: str):
     return f"No se encontraron películas para el director '{nombre_director}'."
 
 # Modelo de recomendación
-@app.get("/modelo_recomendacion/{title}")
+@app.get("/recomendacion/{title}")
 def recommend_movies(title: str):
     # Verificar si el título existe en el DataFrame original
     if title not in df_movies_api_acotado['title'].values:
