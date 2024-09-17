@@ -1,6 +1,6 @@
 # API de Recomendación de Películas
 
-Esta es una API basada en FastAPI que proporciona datos relacionados con películas y recomendaciones. A partir de datasets de películas, responde consultas sobre la cantidad de películas estrenadas por mes, día,características de las mismas, información sobre actores, directores y un sistema de recomendación de películas basado en la similitud de coseno.
+Esta es una API basada en FastAPI que proporciona datos relacionados con películas y recomendaciones. A partir los datasets, responde consultas sobre la cantidad de películas estrenadas por mes, por día, características de las mismas, información sobre actores, directores y un sistema de recomendación de películas basado en la similitud de coseno.
 
 ## Características
 
@@ -10,49 +10,49 @@ La API tiene los siguientes endpoints:
 
     URL: /cantidad_filmaciones_mes/{mes}
     
-    Descripción: Devuelve la cantidad de películas estrenadas en un mes específico.
+    Devuelve la cantidad de películas estrenadas en un mes específico.
 
 
 2. **Cantidad de Filmaciones por Día:**
 
     URL: /cantidad_filmaciones_dia/{dia}
     
-    Descripción: Devuelve la cantidad de películas estrenadas en un día específico de la semana.
+    Devuelve la cantidad de películas estrenadas en un día específico de la semana.
 
 
 3. **Puntuación de una Película por Título:**
 
     URL: /score_titulo/{titulo_de_la_filmacion}
     
-    Descripción: Devuelve la puntuación de popularidad de una película específica.
+    Devuelve la puntuación de popularidad de una película específica.
 
 
 4. **Votos de una Película por Título:**
 
     URL: /votos_titulo/{titulo_de_la_filmacion}
     
-    Descripción: Devuelve la cantidad de votos de una película y su puntuación promedio si tiene más de 2000 votos.
+    Devuelve la cantidad de votos de una película y su puntuación promedio si tiene más de 2000 votos.
 
 
 5. **Cantidad de Películas de un Actor:**
 
     URL: /get_actor/{nombre_actor}
     
-    Descripción: Devuelve la cantidad de películas en las que ha participado un actor específico.
+    Devuelve la cantidad de películas en las que ha participado un actor específico.
 
 
 6. **Cantidad de Películas Dirigidas por un Director:**
 
     URL: /get_director/{nombre_director}
     
-    Descripción: Devuelve la cantidad de películas dirigidas por un director específico.
+    Devuelve la cantidad de películas dirigidas por un director específico.
 
 
 7. **Recomendación de Películas:**
 
     URL: /modelo_recomendacion/{title}
     
-    Descripción: Devuelve una lista de 5 películas recomendadas con su título, popularidad, año de estreno y sinopsis.
+    Devuelve una lista de 5 películas recomendadas con su título, popularidad, año de estreno y sinopsis.
 
 
 ## Archivos de Dataset:
