@@ -6,37 +6,37 @@ Este repositorio contiene una API desarrollada en FastAPI para consultar y anali
 
 La API ofrece los siguientes endpoints para consultar la información de películas:
 
-### `cantidad_filmaciones_mes(Mes)`
+### 1. `cantidad_filmaciones_mes(Mes)`
 - **Descripción**: Devuelve la cantidad de películas estrenadas en un mes específico del dataset.
-- **Parámetro**: `Mes` (nombre del mes en formato de texto, e.g., "January").
+- **Parámetro**: `Mes` (nombre del mes en formato de texto, e.g., "Enero").
 - **Respuesta**: Cantidad de películas estrenadas en el mes solicitado.
 
-### `cantidad_filmaciones_dia(Dia)`
+### 2. `cantidad_filmaciones_dia(Dia)`
 - **Descripción**: Devuelve la cantidad de películas estrenadas en un día específico de la semana.
-- **Parámetro**: `Dia` (nombre del día de la semana en formato de texto, e.g., "Monday").
+- **Parámetro**: `Dia` (nombre del día de la semana en formato de texto, e.g., "Lunes").
 - **Respuesta**: Cantidad de películas estrenadas en el día solicitado.
 
-### `score_titulo(titulo_de_la_filmación)`
+### 3. `score_titulo(titulo_de_la_filmación)`
 - **Descripción**: Devuelve el título, el año de estreno y el score (valoración promedio) de una película específica.
 - **Parámetro**: `titulo_de_la_filmación` (título de la película).
 - **Respuesta**: Título de la película, año de estreno y score.
 
-### `votos_titulo(titulo_de_la_filmación)`
+### 4. `votos_titulo(titulo_de_la_filmación)`
 - **Descripción**: Devuelve el título, la cantidad de votos y el valor promedio de las votaciones si hay al menos 2000 valoraciones; en caso contrario, devuelve un mensaje indicando que no cumple con la condición.
 - **Parámetro**: `titulo_de_la_filmación` (título de la película).
 - **Respuesta**: Título de la película, cantidad de votos y valor promedio de las votaciones o un mensaje indicando la falta de suficiente información.
 
-### `get_actor(nombre_actor)`
-- **Descripción**: Devuelve el éxito del actor medido a través del retorno, la cantidad de películas en las que ha participado y el promedio de retorno por filmación.
+### 5. `get_actor(nombre_actor)`
+- **Descripción**: Devuelve la cantidad de películas en las que ha participado el actor.
 - **Parámetro**: `nombre_actor` (nombre del actor).
-- **Respuesta**: Éxito del actor, cantidad de películas en las que ha participado y promedio de retorno.
+- **Respuesta**: `nombre_actor` ha participado en X cantidad de películas.
 
-### `get_director(nombre_director)`
-- **Descripción**: Devuelve el éxito del director medido a través del retorno, el nombre de cada película, la fecha de lanzamiento, retorno individual, costo y ganancia de cada película.
+### 6. `get_director(nombre_director)`
+- **Descripción**: Devuelve la cantidad de películas en las que ha participado el director.
 - **Parámetro**: `nombre_director` (nombre del director).
-- **Respuesta**: Éxito del director, nombres de las películas, fecha de lanzamiento, retorno individual, costo y ganancia de cada película.
+- **Respuesta**: `nombre_director` ha participado en X cantidad de películas.
 
-### `modelo_recomendacion(titulo)`
+### 7. `modelo_recomendacion(titulo)`
 - **Descripción**: Devuelve una lista de 5 películas similares a la película ingresada por el usuario, en orden descendente de puntuación de similitud.
 - **Parámetro**: `titulo` (título de la película para la cual se desean recomendaciones).
 - **Respuesta**: Lista de 5 títulos de películas similares.
@@ -46,18 +46,20 @@ La API ofrece los siguientes endpoints para consultar la información de pelícu
 El proyecto utiliza los siguientes datasets:
 
 ### `df_movies_api_acotado`
-- **Descripción**: Contiene información sobre películas, incluyendo detalles como presupuesto, popularidad, valoraciones y año de lanzamiento.
+- **Descripción**: Contiene información sobre películas.
 - **Columnas**:
   - `id_collection`: Identificador de la colección.
   - `name_collection`: Nombre de la colección.
-  - `poster_path_collection`: Ruta del poster de la colección.
-  - `backdrop_path_collection`: Ruta del fondo de pantalla de la colección.
   - `budget`: Presupuesto de la película.
   - `id`: Identificador de la película.
   - `original_language`: Idioma original de la película.
   - `overview`: Descripción de la película.
   - `popularity`: Popularidad de la película.
   - `release_date`: Fecha de lanzamiento de la película.
+  - `revenue`: Ingresos generados por la película.
+  - `runtime`: Duración de la película en minutos.
+  - `status`: Estado actual de la película.
+  - `title`: Título de la película.
   - `vote_average`: Valoración promedio de la película.
   - `vote_count`: Número de votos recibidos.
   - `return`: Retorno de la película.
@@ -81,6 +83,7 @@ El proyecto utiliza los siguientes datasets:
 ### `df_crew_api`
 - **Descripción**: Contiene información sobre el equipo de producción de las películas.
 - **Columnas**:
+  - `credit_id`: Identificador del crédito.
   - `id`: Identificador de la película.
   - `name`: Nombre del miembro del equipo.
   - `job`: Rol o trabajo del miembro del equipo.
